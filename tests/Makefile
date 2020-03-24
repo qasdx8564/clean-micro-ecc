@@ -1,0 +1,17 @@
+CPM?=cpm
+TARGETS=
+
+.SECONDARY: $(addsuffix .prj,$(TARGETS))
+
+all: eccTest
+
+%.prj: %.icl
+	$(CPM) project $@ create
+	$(CPM) project $@ path add $(CLEAN_HOME)/lib/Platform
+	$(CPM) project $@ path add ../src
+
+%: %.prj
+	$(CPM) project $< build
+
+clean:
+	$(RM) -r Clean\ System\ Files $(TARGETS) *.prj

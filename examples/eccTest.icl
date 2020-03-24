@@ -21,4 +21,4 @@ Start w
 	# (msec, w) = sharedSecret pub2 pri2 curve w
 	| isNothing mkey = bail "Failed to makeSecret 2\n" io w
 	# (Just sec2) = msec
-	= bail ("Shared secrets are " +++ toString (sec1 == sec2) +++ " identical\n") io w
+	= bail ("Shared secrets are " +++ if (sec1 == sec2) "" "not" +++ " identical\n") io w
