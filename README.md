@@ -3,7 +3,7 @@
 Clean bindings for MicroECC
 
 ## How to install
-After you have made sure you have a correct `CLEAN_HOME` variable and checked out the submodules, run:
+After you have made sure you have a correct `CLEAN_HOME` environment variable and checked out the submodules, run:
 
     make install
 
