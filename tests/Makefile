@@ -3,7 +3,7 @@ TARGETS=
 
 .SECONDARY: $(addsuffix .prj,$(TARGETS))
 
-all: eccTest
+all: $(TARGETS)
 
 %.prj: %.icl
 	$(CPM) project $@ create

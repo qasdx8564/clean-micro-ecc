@@ -1,0 +1,17 @@
+git:
+    quiet: true
+services:
+    - docker
+
+jobs:
+    include:
+        - stage: "test"
+          language: minimal
+          before_install:
+              - docker pull camilstaps/clean
+          script:
+              - ls
+              - docker run -v "$PWD":/root camilstaps/clean:nightly sh -c 'apt-get update -qq && apt-get install --no-install-recommends -qq gcc make && install_clean_nightly.sh base lib-platform && cd /root && make cdeps && make -C examples && make -C tests'
+        - stage: "package"
+          language: c
+          script: make

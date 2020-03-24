@@ -2,6 +2,8 @@ PKGNAME:=MicroECC
 LIBNAME:=clean-lib-$(shell echo $(PKGNAME) | tr '[:upper:]' '[:lower:]')
 CLEAN_HOME?=/opt/clean
 
+all: cdeps
+
 src/Clean\ System\ Files/uECC.o: micro-ecc/uECC.c
 	$(LINK.o) -c $< $(LOADLIBES) $(LDLIBS) -o "$@"
 
