@@ -1,5 +1,5 @@
 CPM?=cpm
-TARGETS=
+TARGETS=testECDH testECDSA testCompress
 
 .SECONDARY: $(addsuffix .prj,$(TARGETS))
 

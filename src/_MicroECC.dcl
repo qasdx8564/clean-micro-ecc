@@ -22,5 +22,5 @@ compress :: !String !UInt8_tP !Curve !*e -> *e
 valid_public_key :: !String !Curve !*e -> (!Int, !*e)
 compute_public_key :: !String !UInt8_tP !Curve !*e -> (!Int, !*e)
 sign :: !String !String !Int !UInt8_tP !Curve !*e -> (!Int, !*e)
-sign_deterministic :: !String !String !Int !Curve !Pointer !Curve !*e -> (!Int, !*e)
+sign_deterministic :: !String !String !Int !Curve !Pointer !Pointer !*e -> (!Int, !*e)
 verify :: !String !String !Int !String !Curve !*e -> (!Int, !*e)

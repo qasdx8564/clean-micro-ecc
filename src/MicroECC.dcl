@@ -31,10 +31,22 @@ makeKey :: !Curve !*e -> (Maybe (String, String), !*e)
 sharedSecret :: !String !String !Curve !*e -> (Maybe String, !*e)
 
 /**
- * Unsure whether to implement this:
+ * Compress a public key
+ *
+ * @param public key
+ * @param curve
+ * @result compressed public key
  */
-//decompress :: !UInt8_tP !UInt8_tP !Curve !*e -> *e
-//compress :: !UInt8_tP !UInt8_tP !Curve !*e -> *e
+compress :: !String !Curve !*e -> (String, !*e)
+
+/**
+ * Decompress a public key
+ *
+ * @param compressed public key
+ * @param curve
+ * @result public key
+ */
+decompress :: !String !Curve !*e -> (String, !*e)
 
 /**
  * Verify a public key

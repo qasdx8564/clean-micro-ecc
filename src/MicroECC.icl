@@ -25,53 +25,71 @@ secp256k1 w = '_MicroECC'.secp256k1 w
 
 makeKey :: !Curve !*e -> (Maybe (String, String), !*e)
 makeKey c w
-	# (pubs, w) = '_MicroECC'.curve_public_key_size c w
-	# (pris, w) = '_MicroECC'.curve_private_key_size c w
-	# (bufpub, w) = mallocSt pubs w
-	# (bufpri, w) = mallocSt pris w
-	# (ok, w) = '_MicroECC'.make_key bufpub bufpri c w
+	#! (pubs, w) = '_MicroECC'.curve_public_key_size c w
+	#! (pris, w) = '_MicroECC'.curve_private_key_size c w
+	#! (bufpub, w) = mallocSt pubs w
+	#! (bufpri, w) = mallocSt pris w
+	#! (ok, w) = '_MicroECC'.make_key bufpub bufpri c w
 	| ok == 0 = (Nothing, freeSt bufpub (freeSt bufpri w))
-	# (pub, bufpub) = readP (flip derefCharArray pubs) bufpub
-	# (pri, bufpri) = readP (flip derefCharArray pris) bufpri
-	# w = freeSt bufpub (freeSt bufpri w)
+	#! (pub, bufpub) = readP (flip derefCharArray pubs) bufpub
+	#! (pri, bufpri) = readP (flip derefCharArray pris) bufpri
+	#! w = freeSt bufpub (freeSt bufpri w)
 	= (Just (pub, pri), w)
 
 sharedSecret :: !String !String !Curve !*e -> (Maybe String, !*e)
 sharedSecret pub pri c w
-	# (pris, w) = '_MicroECC'.curve_private_key_size c w
-	# (bufsec, w) = mallocSt pris w
-	# (ok, w) = '_MicroECC'.shared_secret pub pri bufsec c w
+	#! (pris, w) = '_MicroECC'.curve_private_key_size c w
+	#! (bufsec, w) = mallocSt pris w
+	#! (ok, w) = '_MicroECC'.shared_secret pub pri bufsec c w
 	| ok == 0 = (Nothing, freeSt bufsec w)
-	# (sec, bufsec) = readP (flip derefCharArray pris) bufsec
-	# w = freeSt bufsec w
+	#! (sec, bufsec) = readP (flip derefCharArray pris) bufsec
+	#! w = freeSt bufsec w
 	= (Just sec, w)
+
+compress :: !String !Curve !*e -> (String, !*e)
+compress pub c w
+	#! (pris, w) = '_MicroECC'.curve_private_key_size c w
+	#! (bufcpub, w) = mallocSt (pris+1) w
+	#! (w, bufcpub) = readP (\p->'_MicroECC'.compress pub p c w) bufcpub
+	#! (cpub, bufcpub) = readP (flip derefCharArray (pris+1)) bufcpub
+	#! w = freeSt bufcpub w
+	= (cpub, w)
+
+decompress :: !String !Curve !*e -> (String, !*e)
+decompress cpub c w
+	#! (pubs, w) = '_MicroECC'.curve_public_key_size c w
+	#! (bufpub, w) = mallocSt pubs w
+	#! (w, bufpub) = readP (\p->'_MicroECC'.decompress cpub p c w) bufpub
+	#! (pub, bufpub) = readP (flip derefCharArray pubs) bufpub
+	#! w = freeSt bufpub w
+	= (pub, w)
 
 validPublicKey :: !String !Curve !*e -> (Bool, !*e)
 validPublicKey s c w
-	# (ok, w) = '_MicroECC'.valid_public_key s c w
+	#! (ok, w) = '_MicroECC'.valid_public_key s c w
 	= (ok == 1, w)
 
 computePublicKey :: !String !Curve !*e -> (Maybe String, !*e)
 computePublicKey pri c w
-	# (pubs, w) = '_MicroECC'.curve_public_key_size c w
-	# (bufpub, w) = mallocSt pubs w
-	# (ok, w) = '_MicroECC'.compute_public_key pri bufpub c w
+	#! (pubs, w) = '_MicroECC'.curve_public_key_size c w
+	#! (bufpub, w) = mallocSt pubs w
+	#! (ok, w) = '_MicroECC'.compute_public_key pri bufpub c w
 	| ok == 0 = (Nothing, freeSt bufpub w)
-	# (pub, bufpub) = readP (flip derefCharArray pubs) bufpub
-	# w = freeSt bufpub w
+	#! (pub, bufpub) = readP (flip derefCharArray pubs) bufpub
+	#! w = freeSt bufpub w
 	= (Just pub, w)
 
 ECCSign :: !String !String !Curve !*e -> (Maybe String, !*e)
 ECCSign pri hash c w
-	# (pubs, w) = '_MicroECC'.curve_public_key_size c w
-	# (bufsig, w) = mallocSt pubs w
-	# (ok, w) = '_MicroECC'.sign pri hash (size hash) bufsig c w
+	#! (pubs, w) = '_MicroECC'.curve_public_key_size c w
+	#! (bufsig, w) = mallocSt pubs w
+	#! (ok, w) = '_MicroECC'.sign pri hash (size hash) bufsig c w
 	| ok == 0 = (Nothing, freeSt bufsig w)
-	# (sig, bufsig) = readP (flip derefCharArray pubs) bufsig
-	# w = freeSt bufsig w
+	#! (sig, bufsig) = readP (flip derefCharArray pubs) bufsig
+	#! w = freeSt bufsig w
 	= (Just sig, w)
 
 verify :: !String !String !String !Curve !*e -> (!Bool, !*e)
 verify pub hash sig c w
-	# (ok, w) = '_MicroECC'.verify pub hash (size hash) sig c w
+	#! (ok, w) = '_MicroECC'.verify pub hash (size hash) sig c w
 	= (ok == 1, w)

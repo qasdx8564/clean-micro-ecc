@@ -83,8 +83,7 @@ sign :: !String !String !Int !UInt8_tP !Curve !*e -> (!Int, !*e)
 sign _ _ _ _ _ _ = code {
 		ccall uECC_sign "ssIpp:I:A"
 	}
-
-sign_deterministic :: !String !String !Int !Curve !Pointer !Curve !*e -> (!Int, !*e)
+sign_deterministic :: !String !String !Int !Curve !Pointer !Pointer !*e -> (!Int, !*e)
 sign_deterministic _ _ _ _ _ _ _ = code {
 		ccall uECC_sign_deterministic "ssIppp:I:A"
 	}
