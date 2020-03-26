@@ -11,7 +11,7 @@ jobs:
               - docker pull camilstaps/clean
           script:
               - ls
-              - docker run -v "$PWD":/root camilstaps/clean:nightly sh -c 'apt-get update -qq && apt-get install --no-install-recommends -qq gcc make && install_clean_nightly.sh base lib-platform && cd /root && make cdeps && make -C examples && make -C tests'
+              - docker run -v "$PWD":/root camilstaps/clean:nightly sh -c 'apt-get update -qq && apt-get install --no-install-recommends -qq gcc make && install_clean_nightly.sh base lib-platform && cd /root && make cdeps && make -C examples && make -C tests test'
         - stage: "package"
           language: c
           script: make

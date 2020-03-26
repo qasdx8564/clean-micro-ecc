@@ -13,5 +13,10 @@ all: $(TARGETS)
 %: %.prj
 	$(CPM) project $< build
 
+test: $(TARGETS)
+	./testECDH
+	./testECDSA
+	./testCompress
+
 clean:
 	$(RM) -r Clean\ System\ Files $(TARGETS) *.prj
