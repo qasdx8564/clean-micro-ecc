@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   repository_dispatch:
   schedule:
-    - cron: '* 1,13 * *'
+    - cron: '* 1,13 * * *'
 jobs:
   run:
     runs-on: ubuntu-18.04
